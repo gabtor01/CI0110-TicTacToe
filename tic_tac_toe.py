@@ -48,11 +48,19 @@ def imprimir_tablero(matriz_tablero):
 
 
 def inicializar_tablero(matriz_tablero):
-    '''Esta función se utiliza para llenar el tablero del juego
-        con caracteres vaíos " " al inicio de cada partida.
+    '''Esta función se utiliza para crear y llenar el tablero 
+        del juego con caracteres vaíos " " al inicio de cada 
+        partida.
         
         > Entradas:   diccionario matriz_tablero
         > Retornos:   diccionario matriz_tablero'''
+    
+    # Algoritmo para crear un tablero basado en un diccionario
+    columnas = "ABCDEFGH"
+    filas = [1,2,3,4,5,6,7,8]
+    for i in range(0, 8):
+        for j in range(0, 8):
+            matriz_tablero = {(columnas[i], filas[j]) : " "}
 
     return matriz_tablero
 
@@ -102,9 +110,8 @@ def obtener_nombre_computadora():
 
 
 # Definición e inicialización de variables globales
-jugada = ""
-datos_jugador = {"nombre":"", "marca_juego":"", "jugada":jugada}
-datos_computadora = {"nombre":obtener_nombre_computadora(), "marca_juego":"", "jugada":jugada}
+datos_jugador = {"nombre":"", "marca_juego":"", "jugada":""}
+datos_computadora = {"nombre":obtener_nombre_computadora(), "marca_juego":"", "jugada":""}
 opcion_menu = ""
 regresar_menu = ""
 tablero = {}
@@ -116,7 +123,7 @@ while (opcion_menu != "s"):
 
     if (opcion_menu == "i"):
         imprimir_instrucciones()
-        regresar_menu = input("Ingresa \"<\" para regresar: ")
+        regresar_menu = input("Digite \"<\" para regresar: ")
 
         if (regresar_menu == "<"):
             imprimir_menu()
@@ -124,16 +131,27 @@ while (opcion_menu != "s"):
 
     elif (opcion_menu == "c"):
         imprimir_creditos()
-        regresar_menu = input("Ingresa \"<\" para regresar: ")
+        regresar_menu = input("Digite \"<\" para regresar: ")
 
         if (regresar_menu == "<"):
             imprimir_menu()
             opcion_menu = input(("\nElige una opción: "))
 
-    elif (opcion_menu == "j"):
-        # Aqui se desarrolla el algoritmo del juego
+    elif (opcion_menu == "j"): # Si el usuario elige jugar
+        # Inicializar el tablero al iniciar la partida
+        inicializar_tablero()
+        
+        # Solicitar el nombre al usuario
+        datos_jugador["nombre"] = input("{} quiere saber el nombre de su contrincante: \n".format(datos_computadora["nombre"]))
+
+        # Definir las marcas
+        datos_jugador["marca_juego"] = input("Escoge tu ficha {}, "" O "" o  "" X "" y buena suerte: ".format(datos_jugador["nombre"]))
+        datos_computadora["marca_juego"] = "X" if datos_jugador["marca_juego"] == "O" else "O"
+
         for i in range(0, 64):
             imprimir_tablero()
+            jugada = input("Define tu jugada {}: ".format(datos_jugador["nombre"]))
+
     else:
         print("Parece que esa opción aún no está dentro del juego :(")
         
