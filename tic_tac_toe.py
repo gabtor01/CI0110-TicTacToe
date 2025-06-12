@@ -76,13 +76,19 @@ def computadora_piensa(matriz_tablero):
     return jugada_computadora
 
 
-def jugar(cadena_jugada):
+def colocar_marca(marca, cadena_jugada):
     '''Esta función se utiliza para aplicar la jugada que el humano
-        o la computadora aplican en su respectivo turno. Una vez se
+        o la computadora generan en su respectivo turno. Una vez se
         coloca la marca se retorna el tablero modificado.
 
         > Entradas:   string       cadena_jugada
         > Retornos:   diccionario  tablero'''
+    
+    # cadena_jugada[0] -> columna
+    # cadena_jugada[1] -> fila
+    coordenadas = (cadena_jugada[0], cadena_jugada[1])
+
+    tablero[coordenadas] = marca if tablero[coordenadas] == " " else print("Ya existe una marca en esa posición :(\n")
     
     return tablero
 
