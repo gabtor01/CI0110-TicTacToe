@@ -72,8 +72,8 @@ def computadora_piensa(matriz_tablero):
         > Entradas:   diccionario matriz_tablero
         > Retornos:   string      jugada_computadora'''
     
-    jugada_computadora = ""
-    return jugada_computadora
+    contraataque_computadora = ""
+    return contraataque_computadora
 
 
 def colocar_marca(marca, cadena_jugada):
@@ -115,6 +115,8 @@ def obtener_nombre_computadora():
     return nombre_CPU
 
 
+
+
 # Definición e inicialización de variables globales
 datos_jugador = {"nombre":"", "marca_juego":"", "jugada":""}
 datos_computadora = {"nombre":obtener_nombre_computadora(), "marca_juego":"", "jugada":""}
@@ -154,9 +156,22 @@ while (opcion_menu != "s"):
         datos_jugador["marca_juego"] = input("Escoge tu ficha {}, "" O "" o  "" X "" y buena suerte: ".format(datos_jugador["nombre"]))
         datos_computadora["marca_juego"] = "X" if datos_jugador["marca_juego"] == "O" else "O"
 
-        for i in range(0, 64):
+        for i in range(0, 32):
+            # Mostrar el tablero
             imprimir_tablero()
-            jugada = input("Define tu jugada {}: ".format(datos_jugador["nombre"]))
+
+            # Pedir la jugada del humano y colocarla en el tablero
+            datos_jugador["jugada"] = input("Define tu jugada {}: ".format(datos_jugador["nombre"]))
+            colocar_marca(datos_jugador["jugada"])
+
+            # Mostrar el tablero nuevamente "para la computadora"
+            imprimir_tablero()
+
+            # Generar la jugada de la computadora y colocarla en el tablero
+            datos_computadora["jugada"] = computadora_piensa(tablero)
+            colocar_marca(datos_computadora["jugada"])
+
+
 
     else:
         print("Parece que esa opción aún no está dentro del juego :(")
