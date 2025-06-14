@@ -1,59 +1,50 @@
 # Desarrollador: Gabriel Torres Garbanzo
 
-# Importación de librerías útiles
+# Importación de bibliotecas útiles
 import platform as plt
 import random as rnd
 
 # Definición de métodos
-def imprimir_menu():
-    '''Esta función se utiliza para mostrar en formato de texto
-        la pantalla principal del juego Tic Tac Toe en donde se
-        muestran las opciones al jugador.
-
-        > Entradas:   ninguna
-        > Retornos:   ninguno'''
+def imprimir_menu() -> None:
+    '''Muestra en formato de texto la pantalla principal del juego 
+       con las opciones para el jugador.
+       > Entradas: None
+       > Retornos: None'''
     
     print("Esta es la pantalla principal")
 
 
-def imprimir_instrucciones():
-    '''Esta función se utiliza para mostrar en formato de texto
-        las instruccionbes del juego Tic Tac Toe.
-
-        > Entradas:   ninguna
-        > Retornos:   ninguno'''
+def imprimir_instrucciones() -> None:
+    '''Muestra en formato de texto las instruccionbes del juego.
+       > Entradas: None
+       > Retornos: None'''
     
     print("Estas son las instrucciones")
 
 
-def imprimir_creditos():
-    '''Esta función se utiliza para mostrar en formato de texto
-        los créditos del juego Tic Tac Toe.
-
-        > Entradas:   ninguna
-        > Retornos:   ninguno'''
+def imprimir_creditos() -> None:
+    '''Muestra en formato de texto los créditos del juego.
+       > Entradas: None
+       > Retornos: None'''
     
     print("Estos son los creditos")
 
 
-def imprimir_tablero(matriz_tablero):
-    '''Esta función se utiliza para mostrar el tablero del juego
-        con el formato de un tablero de juego de mesa.
-
-        > Entradas: diccionario matriz_tablero
-        > Retornos:   ninguno'''
+def imprimir_tablero(matriz_tablero: dict[tuple, str]) -> None:
+    '''Muestra el tablero del juego en formato de texto 
+       semejante a un tablero de juego de mesa.
+       > Entradas: dict[tuple, str] matriz_tablero
+       > Retornos: None'''
     
     # Recorrer el tablero y agregar formato cuando se imprime
     print(matriz_tablero)
 
 
-def inicializar_tablero(matriz_tablero):
-    '''Esta función se utiliza para crear y llenar el tablero 
-        del juego con caracteres vaíos " " al inicio de cada 
-        partida.
-        
-        > Entradas:   diccionario matriz_tablero
-        > Retornos:   diccionario matriz_tablero'''
+def inicializar_tablero(matriz_tablero: dict[tuple, str]) -> dict[tuple, str]:
+    '''Crea e inicializa el tablero del juego con caracteres 
+       vaíos " " al inicio de cada partida.
+       > Entradas: dict[tuple, str] matriz_tablero
+       > Retornos: dict[tuple, str] matriz_tablero'''
     
     # Algoritmo para crear un tablero basado en un diccionario
     columnas = "ABCDEFGH"
@@ -65,55 +56,48 @@ def inicializar_tablero(matriz_tablero):
     return matriz_tablero
 
 
-def computadora_piensa(matriz_tablero):
-    '''Esta función se utiliza para generar la jugada con la que
-        la computadora contraataca.
-
-        > Entradas:   diccionario matriz_tablero
-        > Retornos:   string      jugada_computadora'''
+def computadora_piensa(matriz_tablero: dict[tuple, str]) -> str: 
+    '''Genera la jugada con la que la computadora contraataca.
+       > Entradas: dict[tuple, str] matriz_tablero
+       > Retornos: str jugada_computadora'''
     
-    contraataque_computadora = ""
-    return contraataque_computadora
+    contra_computadora = ""
+    return contra_computadora
 
 
-def colocar_marca(marca, cadena_jugada):
-    '''Esta función se utiliza para aplicar la jugada que el humano
-        o la computadora generan en su respectivo turno. Una vez se
-        coloca la marca se retorna el tablero modificado.
-
-        > Entradas:   string       cadena_jugada
-        > Retornos:   diccionario  tablero'''
+def colocar_marca(marca: str, cadena_jugada: str) -> dict[tuple, str]:
+    '''Aplica la jugada que el humano o la computadora generan en 
+       su respectivo turno.
+       > Entradas: str marca, str cadena_jugada
+       > Retornos: dict[tuple, str] tablero'''
     
     # cadena_jugada[0] -> columna
     # cadena_jugada[1] -> fila
     coordenadas = (cadena_jugada[0], cadena_jugada[1])
 
-    tablero[coordenadas] = marca if tablero[coordenadas] == " " else print("Ya existe una marca en esa posición :(\n")
+    tablero[coordenadas] = marca if tablero[coordenadas] == " " else \
+                           print("Ya existe una marca en esa posición :(\n")
     
     return tablero
 
 
-def buscar_ganador(matriz_tablero):
-    '''Esta función implementa el algoritmo de búsqueda con
-        el que se buscan patrones de 4 de la misma marca "X" 
-        u "O" en línea horizontal, vertical o diagonal.
-
-        > Entradas:   diccionario matriz_tablero
-        > Retornos:   ninguno'''
+def buscar_ganador(matriz_tablero: dict[tuple, str]) -> None:
+    '''Algoritmo de búsqueda para hallar patrones de 4 coincidencias 
+       de la misma marca "X" u "O" en horizontal, vertical o diagonal.
+       > Entradas: dict[tuple, str] matriz_tablero
+       > Retornos: None'''
     
     print("Empate")
 
 
-def obtener_nombre_computadora():
-    '''Esta función se utiliza para extraer el nombre del
-        CPU de la computadora donde se ejecute el juego.
-
-        > Entradas:   ninguna
-        > Retornos:   string nombre_CPU'''
+def obtener_nombre_computadora() -> str:
+    '''Obtiene el nombre del CPU de la computadora donde se ejecute 
+       el juego usando la biblioteca platform.
+       > Entradas: None
+       > Retornos: str nombre_CPU'''
     
     nombre_CPU = ""
     return nombre_CPU
-
 
 
 
