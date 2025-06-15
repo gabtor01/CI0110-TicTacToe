@@ -98,20 +98,10 @@ def buscar_ganador(matriz_tablero: dict[tuple, str]) -> None:
     print("Empate")
 
 
-def obtener_nombre_computadora() -> str:
-    '''Obtiene el nombre del CPU de la computadora donde se ejecute 
-       el juego usando la biblioteca platform.
-       > Entradas: None
-       > Retornos: str nombre_CPU'''
-    
-    nombre_CPU = ""
-    return nombre_CPU
-
-
 
 # Definición e inicialización de variables globales
 datos_jugador = {"nombre":"", "marca_juego":"", "jugada":""}
-datos_computadora = {"nombre":obtener_nombre_computadora(), "marca_juego":"", "jugada":""}
+datos_computadora = {"nombre":plt.processor(), "marca_juego":"", "jugada":""}
 opcion_menu = ""
 regresar_menu = ""
 tablero = {}
