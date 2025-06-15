@@ -11,7 +11,15 @@ def imprimir_menu() -> None:
        > Entradas: None
        > Retornos: None'''
     
-    print("Esta es la pantalla principal")
+    print("=" * 41)
+    print(" " * 15 + "TIC TAC TOE")
+    print("=" * 41)
+    print("Selecciona una opción:")
+    print(">> [j] Jugar")
+    print(">> [i] Instrucciones")
+    print(">> [c] Créditos")
+    print(">> [s] Salir")
+    print("=" * 41)
 
 
 def imprimir_instrucciones() -> None:
