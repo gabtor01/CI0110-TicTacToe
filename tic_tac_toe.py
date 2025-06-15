@@ -60,9 +60,17 @@ def computadora_piensa(matriz_tablero: dict[tuple, str]) -> str:
     '''Genera la jugada con la que la computadora contraataca.
        > Entradas: dict[tuple, str] matriz_tablero
        > Retornos: str jugada_computadora'''
-    
-    contra_computadora = ""
-    return contra_computadora
+
+    # Caso base que la clave no este en el tablero
+    # Mientras la clave no este en el tablero se sigue llamando a la funcion
+    columna_aleatoria = rnd.choice(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
+    fila_aleatoria = rnd.choice(range(1, 9))
+    contra_computadora = "{} + {}".format(columna_aleatoria, fila_aleatoria)
+
+    if (columna_aleatoria, fila_aleatoria) not in matriz_tablero:
+        return contra_computadora
+    else:
+        computadora_piensa(tablero)
 
 
 def colocar_marca(marca: str, cadena_jugada: str) -> dict[tuple, str]:
