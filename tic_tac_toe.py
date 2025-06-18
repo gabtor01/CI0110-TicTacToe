@@ -35,8 +35,14 @@ def imprimir_instrucciones() -> str:
     print("│  >                                                          │")
     print("│  >                                                          │")
     print("│  >                                                          │")
-    volver_menu = input("│                                                      >>>  │")
+    print("│  >                                                          │")
+    print("│  >                                                          │")
+    print("│  >                                                          │")
+    print("│  > Luego de [>>>] es donde debes escribir.                  │")
+    print("│  > Escribiendo [<] regresas al inicio, si no estás jugando. │")
     print("╰─────────────────────────────────────────────────────────────╯")
+    volver_menu = input(">>> ")
+
     return volver_menu
 
 
@@ -87,8 +93,8 @@ def crear_tablero() -> dict[tuple, str]:
        en el comienzo de cada partida.'''
     
     # Algoritmo para crear el tablero basado en un diccionario
-    columnas = "ABCDEFGH"
-    filas = [1,2,3,4,5,6,7,8]
+    columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    filas = range(1, 9)
     tablero = {}
 
     for i in columnas:
@@ -98,28 +104,49 @@ def crear_tablero() -> dict[tuple, str]:
     return tablero
 
 
-def computadora_piensa(tablero: dict[tuple, str]) -> str: 
-    '''Genera la jugada con la que la computadora contraataca.
-       > Entradas: dict[tuple, str] tablero
-       > Retornos: str jugada_computadora'''
+def solicitar_datos() -> tuple[dict[str, str], dict[str, str]]:
+    '''Solicita que el jugador ingrese su nombre y marca al inicio de la
+       partida y genera los respectivos datos de la computadora.'''
+    
+    info_jugador = {"nombre":"", "marca":""}
+    info_computadora = {"nombre":platform.processor()[0:26], "marca":""}
 
-    # Caso base que la clave no este en el tablero
-    # Mientras la clave no este en el tablero se sigue llamando a la funcion
-    columna_aleatoria = random.choice(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
-    fila_aleatoria = random.choice(range(1, 9))
-    contra_computadora = "{} + {}".format(columna_aleatoria, fila_aleatoria)
+    # Nombre
+    print("\n\033[1;3m{}\033[0m exige saber el nombre de su contrincante... "
+          "(╯°д°)╯︵ ┻━┻\n ".format(info_computadora["nombre"]))
+    info_jugador["nombre"] = input(">>> ")
 
-    if (columna_aleatoria, fila_aleatoria) not in tablero:
-        return contra_computadora
+    # Marcas
+    print("\n(๑˃ᴗ˂)づ \033[1;3m{}\033[0m, solo falta decidir tu marca "
+          "¿[O] ᕙ(⇀ᴗ↼‶)ᕗ [X]?\n".format(info_jugador["nombre"]))
+    info_jugador["marca"] = input(">>> ")
+
+    if info_jugador["marca"] == "O":
+        info_computadora["marca"] = "X"
     else:
-        computadora_piensa(tablero)
+        info_computadora["marca"] = "O"
+
+    return (info_jugador, info_computadora)
+
+
+def computadora_piensa(tablero: dict[tuple, str]) -> str: 
+    '''Genera la jugada con la que la computadora contraataca.'''
+
+    columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    filas = range(1, 9)
+
+     # Generar jugadas hasta que la celda no esté ocupada
+    while True:
+        colu = random.choice(columnas)
+        fila = random.choice(filas)
+
+        if tablero[(colu, fila)] == ' ':
+            return "{} + {}".format(colu, fila)
 
 
 def colocar_marca(marca: str, cadena_jugada: str) -> dict[tuple, str]:
-    '''Aplica la jugada que el humano o la computadora generan en 
-       su respectivo turno.
-       > Entradas: str marca, str cadena_jugada
-       > Retornos: dict[tuple, str] tablero'''
+    '''Aplica la jugada que el humano o la computadora generan en su
+       respectivo turno.'''
     
     # cadena_jugada[0] -> columna
     # cadena_jugada[1] -> fila
@@ -141,11 +168,6 @@ def buscar_ganador(tablero: dict[tuple, str]) -> None:
 
 
 
-# Definición e inicialización de variables globales
-datos_jugador = {"nombre":"", "marca_juego":"", "jugada":""}
-datos_computadora = {"nombre":platform.processor(), "marca_juego":"", "jugada":""}
-regresar_menu = ""
-tablero = {}
 
 # Juego como tal
 while (opcion_menu != "s"):
@@ -167,16 +189,12 @@ while (opcion_menu != "s"):
             imprimir_menu()
             opcion_menu = input(("\nElige una opción: "))
 
-    elif (opcion_menu == "j"): # Si el usuario elige jugar
-        # Inicializar el tablero al iniciar la partida
-        inicializar_tablero()
-        
-        # Solicitar el nombre al usuario
-        datos_jugador["nombre"] = input("{} quiere saber el nombre de su contrincante: \n".format(datos_computadora["nombre"]))
+    elif (opcion_menu == "j"):
+        # crear e inicializar el tablero
+        tablero = crear_tablero()
 
-        # Definir las marcas
-        datos_jugador["marca_juego"] = input("Escoge tu ficha {}, "" O "" o  "" X "" y buena suerte: ".format(datos_jugador["nombre"]))
-        datos_computadora["marca_juego"] = "X" if datos_jugador["marca_juego"] == "O" else "O"
+        # Solicitar el nombre al usuario
+        datos_jugador, datos_computadora = solicitar_datos()
 
         for i in range(0, 32):
             # Mostrar el tablero
@@ -192,8 +210,6 @@ while (opcion_menu != "s"):
             # Generar la jugada de la computadora y colocarla en el tablero
             datos_computadora["jugada"] = computadora_piensa(tablero)
             colocar_marca(datos_computadora["jugada"])
-
-
 
     else:
         print("Parece que esa opción aún no está dentro del juego :(")
