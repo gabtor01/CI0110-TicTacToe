@@ -1,81 +1,115 @@
-# Desarrollador: Gabriel Torres Garbanzo
+'''Desarrollador: Gabriel Torres Garbanzo
+   
+'''
 
 # Importación de bibliotecas útiles
-import platform as plt
-import random as rnd
+import platform
+import random
 
 # Definición de métodos
-def imprimir_menu() -> None:
-    '''Muestra en formato de texto la pantalla principal del juego 
-       con las opciones para el jugador.
-       > Entradas: None
-       > Retornos: None'''
+def imprimir_menu() -> str:
+    '''Muestra en formato de texto la pantalla principal del juego  con
+       las opciones para el jugador.'''
     
-    print("=" * 41)
-    print(" " * 15 + "TIC TAC TOE")
-    print("=" * 41)
-    print("Selecciona una opción:")
-    print(">> [j] Jugar")
-    print(">> [i] Instrucciones")
-    print(">> [c] Créditos")
-    print(">> [s] Salir")
-    print("=" * 41)
+    print("╭─────────────────────────────────────────────────────────────╮")
+    print("│                         TIC TAC TOE                         │")
+    print("├─────────────────────────────────────────────────────────────┤")
+    print("│ Escribe una letra:  ▄▄     ▄▄  ▄▄▄▄▄▄  ▄▄     ▄▄  ▄▄▄▄▄▄    │")
+    print("│  > [j] Jugar          ▀▄ ▄▀   █      █   ▀▄ ▄▀   █      █   │")
+    print("│  > [i] Instrucciones    █    ▐        ▌    █    ▐        ▌  │")
+    print("│  > [c] Créditos       ▄▀ ▀▄   █      █   ▄▀ ▀▄   █      █   │")
+    print("│  > [s] Salir        ▀▀     ▀▀  ▀▀▀▀▀▀  ▀▀     ▀▀  ▀▀▀▀▀▀    │")
+    print("╰─────────────────────────────────────────────────────────────╯")
+    opcion_menu = input(">>> ")
+    return opcion_menu
 
 
-def imprimir_instrucciones() -> None:
-    '''Muestra en formato de texto las instruccionbes del juego.
-       > Entradas: None
-       > Retornos: None'''
-    
-    print("Estas son las instrucciones")
+def imprimir_instrucciones() -> str:
+    '''Muestra en formato de texto las instruccionbes del juego.'''
+
+    print("╭─────────────────────────────────────────────────────────────╮")
+    print("│                        INSTRUCCIONES                        │")
+    print("├─────────────────────────────────────────────────────────────┤")
+    print("│  >                                                          │")
+    print("│  >                                                          │")
+    print("│  >                                                          │")
+    print("│  >                                                          │")
+    print("│  >                                                          │")
+    volver_menu = input("│                                                      >>>  │")
+    print("╰─────────────────────────────────────────────────────────────╯")
+    return volver_menu
 
 
-def imprimir_creditos() -> None:
-    '''Muestra en formato de texto los créditos del juego.
-       > Entradas: None
-       > Retornos: None'''
+def imprimir_creditos() -> str:
+    '''Muestra en formato de texto los créditos del juego.'''
     
     print("Estos son los creditos")
 
 
-def imprimir_tablero(matriz_tablero: dict[tuple, str]) -> None:
-    '''Muestra el tablero del juego en formato de texto 
-       semejante a un tablero de juego de mesa.
-       > Entradas: dict[tuple, str] matriz_tablero
-       > Retornos: None'''
+def imprimir_tablero(tablero: dict[tuple, str],
+                     nombre_jugador: str, 
+                     nombre_computadora: str) -> None:
+    '''Muestra el tablero del juego en formato de texto  semejante a un
+       tablero de juego de mesa.'''
+
+    columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
     
-    # Recorrer el tablero y agregar formato cuando se imprime
-    print(matriz_tablero)
+    # Inicio del tablero
+    print("╭──────────────────────────────┬──────────────────────────────╮")
+    print("│{:^30}│{:^30}│".format(nombre_jugador, nombre_computadora))
+    print("├──────────────────────────────┴──────────────────────────────┤")
+    print("│                                                             │")
+    print("│         " + "     ".join(columnas) + "         │")
+    print("│      ╔" + "═════╦" * 7 + "═════╗      │")
+
+    # Datos del tablero
+    for fila in range(1, 9):
+        celdas = [] # Por cada fila almacena 8 marcas (Una por columna)
+        for columna in columnas:
+            celdas.append(tablero[(columna, fila)])
+
+        print("│    {} ║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║ {}    │"
+            .format(fila, *celdas, fila))
+
+        if fila < 8:
+            print("│      ╠" + "═════╬" * 7 + "═════╣      │")
+        else:
+            print("│      ╚" + "═════╩" * 7 + "═════╝      │")
+
+    # Fin del tablero
+    print("│         " + "     ".join(columnas) + "         │")
+    print("│                                                             │")
+    print("╰─────────────────────────────────────────────────────────────╯")
 
 
-def inicializar_tablero(matriz_tablero: dict[tuple, str]) -> dict[tuple, str]:
-    '''Crea e inicializa el tablero del juego con caracteres 
-       vaíos " " al inicio de cada partida.
-       > Entradas: dict[tuple, str] matriz_tablero
-       > Retornos: dict[tuple, str] matriz_tablero'''
+def crear_tablero() -> dict[tuple, str]:
+    '''Crea e inicializa el tablero del juego con caracteres vacíos ' '
+       en el comienzo de cada partida.'''
     
-    # Algoritmo para crear un tablero basado en un diccionario
+    # Algoritmo para crear el tablero basado en un diccionario
     columnas = "ABCDEFGH"
     filas = [1,2,3,4,5,6,7,8]
-    for i in range(0, 8):
-        for j in range(0, 8):
-            matriz_tablero = {(columnas[i], filas[j]) : " "}
+    tablero = {}
 
-    return matriz_tablero
+    for i in columnas:
+        for j in filas:
+            tablero[(i, j)] = ' '
+
+    return tablero
 
 
-def computadora_piensa(matriz_tablero: dict[tuple, str]) -> str: 
+def computadora_piensa(tablero: dict[tuple, str]) -> str: 
     '''Genera la jugada con la que la computadora contraataca.
-       > Entradas: dict[tuple, str] matriz_tablero
+       > Entradas: dict[tuple, str] tablero
        > Retornos: str jugada_computadora'''
 
     # Caso base que la clave no este en el tablero
     # Mientras la clave no este en el tablero se sigue llamando a la funcion
-    columna_aleatoria = rnd.choice(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
-    fila_aleatoria = rnd.choice(range(1, 9))
+    columna_aleatoria = random.choice(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
+    fila_aleatoria = random.choice(range(1, 9))
     contra_computadora = "{} + {}".format(columna_aleatoria, fila_aleatoria)
 
-    if (columna_aleatoria, fila_aleatoria) not in matriz_tablero:
+    if (columna_aleatoria, fila_aleatoria) not in tablero:
         return contra_computadora
     else:
         computadora_piensa(tablero)
@@ -97,10 +131,10 @@ def colocar_marca(marca: str, cadena_jugada: str) -> dict[tuple, str]:
     return tablero
 
 
-def buscar_ganador(matriz_tablero: dict[tuple, str]) -> None:
+def buscar_ganador(tablero: dict[tuple, str]) -> None:
     '''Algoritmo de búsqueda para hallar patrones de 4 coincidencias 
        de la misma marca "X" u "O" en horizontal, vertical o diagonal.
-       > Entradas: dict[tuple, str] matriz_tablero
+       > Entradas: dict[tuple, str] tablero
        > Retornos: None'''
     
     print("Empate")
@@ -109,15 +143,13 @@ def buscar_ganador(matriz_tablero: dict[tuple, str]) -> None:
 
 # Definición e inicialización de variables globales
 datos_jugador = {"nombre":"", "marca_juego":"", "jugada":""}
-datos_computadora = {"nombre":plt.processor(), "marca_juego":"", "jugada":""}
-opcion_menu = ""
+datos_computadora = {"nombre":platform.processor(), "marca_juego":"", "jugada":""}
 regresar_menu = ""
 tablero = {}
 
 # Juego como tal
 while (opcion_menu != "s"):
-    imprimir_menu()
-    opcion_menu = input(("\nElige una opción: "))
+    opcion_menu = imprimir_menu()
 
     if (opcion_menu == "i"):
         imprimir_instrucciones()
