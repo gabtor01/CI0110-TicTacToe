@@ -1,6 +1,6 @@
 '''
 Desarrollador: Gabriel Torres G.
-Github: gabtor01
+GitHub: gabtor01
 
 Nota: los parámetros y los retornos de las funciones especifican
       el tipo de datos. Esto es soportado a partir de Python 3.5
@@ -63,7 +63,7 @@ def imprimir_creditos() -> str:
     print("│                                                             │")
     print("│                      Gabriel Torres G.                      │")
     print("│                                                   * ✧ ･     │")
-    print(r"│                      Github: gabtor01          ･ﾟ (\_/)✧    │")
+    print(r"│                      GitHub: gabtor01          ･ﾟ (\_/)✧    │")
     print("│                                                 * (^ᴥ^) :   │")
     print(r"│                                                   /⊃ ⊂\     │")
     print("│                                                 ▐▀▀▀▀▀▀▀▌   │")
@@ -80,7 +80,7 @@ def imprimir_tablero(tablero: dict[tuple, str],
 
     columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
     
-    # Imprimir el inicio del tablero
+    # Imprimir el inicio de la interfaz
     print("╭──────────────────────────────┬──────────────────────────────╮")
     print("│{:^30}│{:^30}│".format(nombre_jugador, nombre_computadora))
     print("├──────────────────────────────┴──────────────────────────────┤")
@@ -90,19 +90,23 @@ def imprimir_tablero(tablero: dict[tuple, str],
 
     # Imprimir el cuerpo del tablero
     for fila in range(1, 9):
-        celdas = [] # Por cada fila almacena 8 marcas (Una por columna)
+        celdas = []
+        # Por cada fila celda almacena 8 marcas (Una por columna)
         for columna in columnas:
             celdas.append(tablero[(columna, fila)])
 
+        # Se desempaquetan las celdas en todas las columnas para cada fila
         print("│    {} ║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║ {}    │"
-            .format(fila, *celdas, fila))
+              .format(fila, *celdas, fila))
 
+        # Después de cada fila completada se imprime la "entrefila"
         if fila < 8:
             print("│      ╠" + "═════╬" * 7 + "═════╣      │")
+        # En la octava fila se imprime el borde inferior
         else:
             print("│      ╚" + "═════╩" * 7 + "═════╝      │")
 
-    # Fin del tablero
+    # Imprimir el brode de la interfaz
     print("│         " + "     ".join(columnas) + "         │")
     print("│                                                             │")
     print("╰─────────────────────────────────────────────────────────────╯")
@@ -147,14 +151,14 @@ def solicitar_datos() -> tuple[dict[str, str], dict[str, str]]:
     else:
         info_computadora["marca"] = "O"
 
-    return (info_jugador, info_computadora)
+    return info_jugador, info_computadora
 
 
 def computadora_responde(tablero: dict[tuple, str]) -> str: 
     '''Genera la jugada con la que la computadora contraataca.'''
 
     columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-    filas = filas = [1, 2, 3, 4, 5, 6, 7, 8]
+    filas = [1, 2, 3, 4, 5, 6, 7, 8]
 
     # Generar jugadas hasta que la celda no esté ocupada
     while True:
@@ -162,18 +166,18 @@ def computadora_responde(tablero: dict[tuple, str]) -> str:
         fila = random.choice(filas)
 
         if tablero[(colu, fila)] == ' ':
-            return "{} + {}".format(colu, fila)
+            return "{}{}".format(colu, fila)
 
 
-def colocar_marca(marca: str, cadena_jugada: str) -> dict[tuple, str]:
+def colocar_marca(marca: str, posicion_marca: str, tablero: dict[tuple, str]) -> dict[tuple, str]:
     '''Aplica la jugada que el humano o la computadora generan en su
        respectivo turno.'''
     
     # cadena_jugada[0] -> columna
     # cadena_jugada[1] -> fila
-    coordenadas = (cadena_jugada[0], cadena_jugada[1])
+    coordenadas = (posicion_marca[0], int(posicion_marca[1]))
 
-    tablero[coordenadas] = marca if tablero[coordenadas] == " " else \
+    tablero[coordenadas] = marca if tablero[coordenadas] == ' ' else \
                            print("Ya existe una marca en esa posición :(\n")
     
     return tablero
@@ -187,48 +191,55 @@ def buscar_ganador(tablero: dict[tuple, str]) -> None:
     # Tratar de implementar algoritmo de ventana deslizante
 
 
-
-# Llamar funciones según el flujo del juego
-while (opcion_menu != "s"):
+opcion_menu = ' '
+# Invocar funciones según el flujo del juego
+while (opcion_menu != 's'):
     opcion_menu = imprimir_menu()
 
-    if (opcion_menu == "i"):
-        imprimir_instrucciones()
-        regresar_menu = input("Digite \"<\" para regresar: ")
+    if (opcion_menu == 'i'):
+        regresar_menu = imprimir_instrucciones()
+        if (regresar_menu == '<'):
+            continue
 
+    elif (opcion_menu == 'c'):
+        regresar_menu = imprimir_creditos()
         if (regresar_menu == "<"):
-            imprimir_menu()
-            opcion_menu = input(("\nElige una opción: "))
+            continue
 
-    elif (opcion_menu == "c"):
-        imprimir_creditos()
-        regresar_menu = input("Digite \"<\" para regresar: ")
+    elif (opcion_menu == 'j'):
+        # Crear el tablero e inicializar valores de las claves en ' '
+        tablero_juego = crear_tablero()
 
-        if (regresar_menu == "<"):
-            imprimir_menu()
-            opcion_menu = input(("\nElige una opción: "))
-
-    elif (opcion_menu == "j"):
-        # crear e inicializar el tablero
-        tablero = crear_tablero()
-
-        # Solicitar el nombre al usuario
+        # Solicitar datos al jugador
         datos_jugador, datos_computadora = solicitar_datos()
 
+        # Controlar los turnos
         for i in range(0, 32):
+            # Turno del jugador
+
             # Mostrar el tablero
-            imprimir_tablero()
+            imprimir_tablero(tablero_juego,
+                             datos_jugador["nombre"],
+                             datos_computadora["nombre"])
 
-            # Pedir la jugada del humano y colocarla en el tablero
-            datos_jugador["jugada"] = input("Define tu jugada {}: ".format(datos_jugador["nombre"]))
-            colocar_marca(datos_jugador["jugada"])
+            # Solicitar la jugada
+            ubicacion_marca = input(">>> ")
+            tablero_juego = colocar_marca(datos_jugador["marca"],
+                                          ubicacion_marca, 
+                                          tablero_juego)
 
-            # Mostrar el tablero nuevamente "para la computadora"
-            imprimir_tablero()
+            # Mostrar el tablero
+            imprimir_tablero(tablero_juego, 
+                             datos_jugador["nombre"],
+                             datos_computadora["nombre"])
+            
+            # Turno de la computadora
 
-            # Generar la jugada de la computadora y colocarla en el tablero
-            datos_computadora["jugada"] = computadora_piensa(tablero)
-            colocar_marca(datos_computadora["jugada"])
+            # Generar la jugada
+            ubicacion_marca = computadora_responde(tablero_juego)
+            colocar_marca(datos_computadora["marca"],
+                          ubicacion_marca,
+                          tablero_juego)
 
     else:
         print("Parece que esa opción aún no está dentro del juego :(")
