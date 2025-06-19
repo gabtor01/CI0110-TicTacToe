@@ -2,9 +2,12 @@
 Desarrollador: Gabriel Torres G.
 GitHub: gabtor01
 
-Nota: los parámetros y los retornos de las funciones especifican
-      el tipo de datos. Esto es soportado a partir de Python 3.5
-      y se implementa para que el código sea más legible.
+Notas: 
+    1) Los parámetros y los retornos de las funciones especifican
+    el tipo de datos. Esto es soportado a partir de Python 3.5
+    y se implementó para que el código sea más legible.
+
+    2) Para ejecutar en la terminal, usar: python .\tic_tac_toe.py
 '''
 
 # Importar bibliotecas útiles
@@ -45,10 +48,10 @@ def imprimir_instrucciones() -> str:
     print("│  >                                                          │")
     print("│  >                                                          │")
     print("│  >                                                          │")
-    print("│  > Luego de cada [>>>] es donde debes escribir.             │")
+    print("│  > Luego de cada [>>>] es donde puedes escribir.            │")
     print("│  > Escribiendo [<] regresas al inicio, si no estás jugando. │")
     print("╰─────────────────────────────────────────────────────────────╯")
-    # Recordar agregar manejo de execpciones
+    # Recordar agregar manejo de execpciones y terminar de agregar instrucciones
     volver_menu = input(">>> ")
     return volver_menu
 
@@ -79,6 +82,7 @@ def imprimir_tablero(tablero: dict[tuple, str],
     '''Muestra el tablero del juego actualizado.'''
 
     columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    filas = [1, 2, 3, 4, 5, 6, 7, 8]
     
     # Imprimir el inicio de la interfaz
     print("╭──────────────────────────────┬──────────────────────────────╮")
@@ -89,7 +93,7 @@ def imprimir_tablero(tablero: dict[tuple, str],
     print("│      ╔" + "═════╦" * 7 + "═════╗      │")
 
     # Imprimir el cuerpo del tablero
-    for fila in range(1, 9):
+    for fila in filas:
         celdas = []
         # Por cada fila celda almacena 8 marcas (Una por columna)
         for columna in columnas:
@@ -130,26 +134,49 @@ def crear_tablero() -> dict[tuple, str]:
 
 
 def solicitar_datos() -> tuple[dict[str, str], dict[str, str]]:
-    '''Solicita los datos (Nombre y marca) del jugdor al inicio de la
-       partida y genera los respectivos datos de la computadora.'''
+    '''Agrupa los datos del jugdor y genera los respectivos datos de la
+       computadora. Se usan códigos de escape ANSI en la impresión para
+       dar formato a los nombres.'''
     
     info_jugador = {"nombre":"", "marca":""}
-    info_computadora = {"nombre":platform.processor()[0:26], "marca":""}
+    info_computadora = {"nombre":platform.processor()[0:7], "marca":""}
 
-    # Nombre
-    print("\n\033[1;3m{}\033[0m exige saber el nombre de su contrincante... "
+    # Solicitar el nombre
+    print("\nLord \033[1m{}\033[0m exige saber el nombre de su contrincante... "
           "(╯°д°)╯︵ ┻━┻\n ".format(info_computadora["nombre"]))
-    info_jugador["nombre"] = input(">>> ")
-
-    # Marcas
-    print("\n(๑˃ᴗ˂)づ \033[1;3m{}\033[0m, solo falta decidir tu marca "
+    
+    # Manejo de excepciones para el nombre del jugador
+    nombre_valido = False
+    while (not nombre_valido):
+        nombre_jugador = input(">>> ")
+        if (len(nombre_jugador) < 31):
+            # Si tiene 30 o menos caracteres es válido
+            info_jugador["nombre"] = nombre_jugador
+            nombre_valido = True
+        else:
+            print("\nMucho texto... (￣ρ￣)zzZZ\n")
+            
+    # Solicitar la marca
+    print("\n(๑˃ᴗ˂)づ \033[1m{}\033[0m, solo falta que decidas tu marca "
           "¿[O] ᕙ(⇀ᴗ↼‶)ᕗ [X]?\n".format(info_jugador["nombre"]))
-    info_jugador["marca"] = input(">>> ")
+    
+    # Manejo de excepciones para la marca del jugador
+    marca_valida = False
+    while (not marca_valida):
+        marca_jugador = input(">>> ").upper() # No sensible a minúsculas
+        if (marca_jugador == 'X' or marca_jugador == 'O'):
+            # Cualquier otro caracter no es válido
+            info_jugador["marca"] = marca_jugador
+            marca_valida = True
+        else:
+            print("\n¡Solo puedes escoger entre [O] y [X] \033[1m{}\033[0m!\n"
+                  .format(info_jugador["nombre"]))
 
-    if info_jugador["marca"] == "O":
-        info_computadora["marca"] = "X"
+    # Definir la marca de la computadora
+    if info_jugador["marca"] == 'O':
+        info_computadora["marca"] = 'X'
     else:
-        info_computadora["marca"] = "O"
+        info_computadora["marca"] = 'O'
 
     return info_jugador, info_computadora
 
@@ -161,34 +188,59 @@ def computadora_responde(tablero: dict[tuple, str]) -> str:
     filas = [1, 2, 3, 4, 5, 6, 7, 8]
 
     # Generar jugadas hasta que la celda no esté ocupada
-    while True:
-        colu = random.choice(columnas)
-        fila = random.choice(filas)
+    ubicacion_valida = False
+    while (not ubicacion_valida):
+        respuesta_computadora = (random.choice(columnas), random.choice(filas))
+        if tablero[respuesta_computadora] == ' ':
+            ubicacion_valida = True
+    return "{}{}".format(respuesta_computadora[0], respuesta_computadora[1])
 
-        if tablero[(colu, fila)] == ' ':
-            return "{}{}".format(colu, fila)
 
-
-def colocar_marca(marca: str, posicion_marca: str, tablero: dict[tuple, str]) -> dict[tuple, str]:
-    '''Aplica la jugada que el humano o la computadora generan en su
-       respectivo turno.'''
+def colocar_marca(marca: str, 
+                  posicion_marca: str, 
+                  tablero: dict[tuple, str]) -> dict[tuple, str]:
+    '''Ubica la marca en el tablero en la posición especificada.'''
     
-    # cadena_jugada[0] -> columna
-    # cadena_jugada[1] -> fila
-    coordenadas = (posicion_marca[0], int(posicion_marca[1]))
+    # posicion_marca[0]: columna
+    # posicion_marca[1]: fila
+    # .upper() para quitar sensibilidad a minúsculas
+    # Castear la fila porque el tablero se crea con enteros
 
-    tablero[coordenadas] = marca if tablero[coordenadas] == ' ' else \
-                           print("Ya existe una marca en esa posición :(\n")
-    
+    # Manejo de excepciones para ubicar la marca en el tablero
+    ubicacion_valida = False
+    while (not ubicacion_valida):
+        if (len(posicion_marca) != 2):
+            print("\n¡Woah! Recuerda que solo necesitas" \
+                  " 2 dígitos (∩_∩;)\n")
+        else:
+            try:
+                columna = posicion_marca[0].upper()
+                fila = int(posicion_marca[1])
+                coordenadas = (columna, fila)
+
+                if (coordenadas not in tablero):
+                    print("\nNo tenemos esa ubicación en " \
+                          "nuestro tablero (U_U')\n")
+                elif (tablero[coordenadas] != ' '):
+                    print("\nYa existe una marca en esa posición (╥﹏╥)\n")
+                else:
+                    ubicacion_valida = True
+            except ValueError:
+                print("\n¡Ups! No olvides que la fila debe" \
+                      " ser un número del 1 al 8 (∩_∩;)\n")
+        if not ubicacion_valida:
+            posicion_marca = input(">>> ")
+
+    tablero[coordenadas] = marca
     return tablero
 
 
 def buscar_ganador(tablero: dict[tuple, str]) -> None:
     '''Implementa un algoritmo de búsqueda para hallar los patrones de 4
-       coincidencias de la misma marca "O" o "X" en horizontal, vertical
+       coincidencias de la misma marca 'X' u 'O' en horizontal, vertical
        o diagonal.'''
     # Por hacer
-    # Tratar de implementar algoritmo de ventana deslizante
+    # Recordar revisar algoritmo de ventana deslizante
 
 
 opcion_menu = ' '
@@ -222,7 +274,7 @@ while (opcion_menu != 's'):
                              datos_jugador["nombre"],
                              datos_computadora["nombre"])
 
-            # Solicitar la jugada
+            # Solicitar la jugada 
             ubicacion_marca = input(">>> ")
             tablero_juego = colocar_marca(datos_jugador["marca"],
                                           ubicacion_marca, 
@@ -242,5 +294,5 @@ while (opcion_menu != 's'):
                           tablero_juego)
 
     else:
-        print("Parece que esa opción aún no está dentro del juego :(")
+        print("Parece que esa opción no está dentro del juego (╥﹏╥)")
         
