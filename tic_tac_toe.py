@@ -85,6 +85,7 @@ def imprimir_tablero(tablero: dict[tuple, str],
     filas = [1, 2, 3, 4, 5, 6, 7, 8]
     
     # Imprimir el inicio de la interfaz
+    # {:^30} centra la variable en un espacio de 30 caracteres
     print("╭──────────────────────────────┬──────────────────────────────╮")
     print("│{:^30}│{:^30}│".format(nombre_jugador, nombre_computadora))
     print("├──────────────────────────────┴──────────────────────────────┤")
@@ -94,14 +95,16 @@ def imprimir_tablero(tablero: dict[tuple, str],
 
     # Imprimir el cuerpo del tablero
     for fila in filas:
-        celdas = []
-        # Por cada fila celda almacena 8 marcas (Una por columna)
-        for columna in columnas:
-            celdas.append(tablero[(columna, fila)])
+        # Imprimir el número de fila e inicio de celda
+        print("│    {} ║".format(fila), end="") # No hacer \n al final
 
-        # Se desempaquetan las celdas en todas las columnas para cada fila
-        print("│    {} ║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║{:^5}║ {}    │"
-              .format(fila, *celdas, fila))
+        # Imprimir cada marca de la fila para cada columna
+        for columna in columnas:
+            # No hacer \n luego de cada marca
+            print("{:^5}║".format(tablero[(columna, fila)]), end="")
+
+        # Cierre de la fila
+        print(" {}    │".format(fila)) # Hacer \n porque empieza otra fila
 
         # Después de cada fila completada se imprime la "entrefila"
         if fila < 8:
