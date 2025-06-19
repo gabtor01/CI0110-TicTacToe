@@ -1,31 +1,38 @@
-'''Desarrollador: Gabriel Torres Garbanzo
-   
+'''
+Desarrollador: Gabriel Torres G.
+Github: gabtor01
+
+Nota: los parámetros y los retornos de las funciones especifican
+      el tipo de datos. Esto es soportado a partir de Python 3.5
+      y se implementa para que el código sea más legible.
 '''
 
-# Importación de bibliotecas útiles
+# Importar bibliotecas útiles
 import platform
 import random
 
-# Definición de métodos
+# Definir funciones
 def imprimir_menu() -> str:
-    '''Muestra en formato de texto la pantalla principal del juego  con
-       las opciones para el jugador.'''
+    '''Muestra la pantalla principal del juego con las opciones para el
+       jugador. Solicita y retorna la elección del jugador.'''
     
     print("╭─────────────────────────────────────────────────────────────╮")
     print("│                         TIC TAC TOE                         │")
     print("├─────────────────────────────────────────────────────────────┤")
     print("│ Escribe una letra:  ▄▄     ▄▄  ▄▄▄▄▄▄  ▄▄     ▄▄  ▄▄▄▄▄▄    │")
     print("│  > [j] Jugar          ▀▄ ▄▀   █      █   ▀▄ ▄▀   █      █   │")
-    print("│  > [i] Instrucciones    █    ▐        ▌    █    ▐        ▌  │")
+    print("│  > [i] Instrucciones    █    █        █    █    █        █  │")
     print("│  > [c] Créditos       ▄▀ ▀▄   █      █   ▄▀ ▀▄   █      █   │")
     print("│  > [s] Salir        ▀▀     ▀▀  ▀▀▀▀▀▀  ▀▀     ▀▀  ▀▀▀▀▀▀    │")
     print("╰─────────────────────────────────────────────────────────────╯")
+    # Recordar agregar manejo de execpciones
     opcion_menu = input(">>> ")
     return opcion_menu
 
 
 def imprimir_instrucciones() -> str:
-    '''Muestra en formato de texto las instruccionbes del juego.'''
+    '''Muestra las instruccionbes del juego. Solicita y retorna '<' para
+       que el jugador pueda regresar al menú.'''
 
     print("╭─────────────────────────────────────────────────────────────╮")
     print("│                        INSTRUCCIONES                        │")
@@ -38,29 +45,42 @@ def imprimir_instrucciones() -> str:
     print("│  >                                                          │")
     print("│  >                                                          │")
     print("│  >                                                          │")
-    print("│  > Luego de [>>>] es donde debes escribir.                  │")
+    print("│  > Luego de cada [>>>] es donde debes escribir.             │")
     print("│  > Escribiendo [<] regresas al inicio, si no estás jugando. │")
     print("╰─────────────────────────────────────────────────────────────╯")
+    # Recordar agregar manejo de execpciones
     volver_menu = input(">>> ")
-
     return volver_menu
 
 
 def imprimir_creditos() -> str:
-    '''Muestra en formato de texto los créditos del juego.'''
-    
-    print("Estos son los creditos")
+    '''Muestra los créditos del juego. Pide y retorna '<' para que el
+       jugador pueda regresar al menú.'''
+
+    print("╭─────────────────────────────────────────────────────────────╮")
+    print("│                        DESARROLLADOR                        │")
+    print("├─────────────────────────────────────────────────────────────┤")
+    print("│                                                             │")
+    print("│                      Gabriel Torres G.                      │")
+    print("│                                                   * ✧ ･     │")
+    print(r"│                      Github: gabtor01          ･ﾟ (\_/)✧    │")
+    print("│                                                 * (^ᴥ^) :   │")
+    print(r"│                                                   /⊃ ⊂\     │")
+    print("│                                                 ▐▀▀▀▀▀▀▀▌   │")
+    print("╰─────────────────────────────────────────────────────────────╯")
+    # Recordar agregar manejo de execpciones
+    volver_menu = input(">>> ")
+    return volver_menu
 
 
 def imprimir_tablero(tablero: dict[tuple, str],
                      nombre_jugador: str, 
                      nombre_computadora: str) -> None:
-    '''Muestra el tablero del juego en formato de texto  semejante a un
-       tablero de juego de mesa.'''
+    '''Muestra el tablero del juego actualizado.'''
 
     columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
     
-    # Inicio del tablero
+    # Imprimir el inicio del tablero
     print("╭──────────────────────────────┬──────────────────────────────╮")
     print("│{:^30}│{:^30}│".format(nombre_jugador, nombre_computadora))
     print("├──────────────────────────────┴──────────────────────────────┤")
@@ -68,7 +88,7 @@ def imprimir_tablero(tablero: dict[tuple, str],
     print("│         " + "     ".join(columnas) + "         │")
     print("│      ╔" + "═════╦" * 7 + "═════╗      │")
 
-    # Datos del tablero
+    # Imprimir el cuerpo del tablero
     for fila in range(1, 9):
         celdas = [] # Por cada fila almacena 8 marcas (Una por columna)
         for columna in columnas:
@@ -90,22 +110,23 @@ def imprimir_tablero(tablero: dict[tuple, str],
 
 def crear_tablero() -> dict[tuple, str]:
     '''Crea e inicializa el tablero del juego con caracteres vacíos ' '
-       en el comienzo de cada partida.'''
+       al comienzo de cada partida.'''
     
     # Algoritmo para crear el tablero basado en un diccionario
     columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-    filas = range(1, 9)
+    filas = [1, 2, 3, 4, 5, 6, 7, 8]
     tablero = {}
 
+    # Asignar un valor inicial a todas las filas por cada columna
     for i in columnas:
         for j in filas:
-            tablero[(i, j)] = ' '
+            tablero[(i, j)] = ' ' 
 
     return tablero
 
 
 def solicitar_datos() -> tuple[dict[str, str], dict[str, str]]:
-    '''Solicita que el jugador ingrese su nombre y marca al inicio de la
+    '''Solicita los datos (Nombre y marca) del jugdor al inicio de la
        partida y genera los respectivos datos de la computadora.'''
     
     info_jugador = {"nombre":"", "marca":""}
@@ -129,13 +150,13 @@ def solicitar_datos() -> tuple[dict[str, str], dict[str, str]]:
     return (info_jugador, info_computadora)
 
 
-def computadora_piensa(tablero: dict[tuple, str]) -> str: 
+def computadora_responde(tablero: dict[tuple, str]) -> str: 
     '''Genera la jugada con la que la computadora contraataca.'''
 
     columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-    filas = range(1, 9)
+    filas = filas = [1, 2, 3, 4, 5, 6, 7, 8]
 
-     # Generar jugadas hasta que la celda no esté ocupada
+    # Generar jugadas hasta que la celda no esté ocupada
     while True:
         colu = random.choice(columnas)
         fila = random.choice(filas)
@@ -159,17 +180,15 @@ def colocar_marca(marca: str, cadena_jugada: str) -> dict[tuple, str]:
 
 
 def buscar_ganador(tablero: dict[tuple, str]) -> None:
-    '''Algoritmo de búsqueda para hallar patrones de 4 coincidencias 
-       de la misma marca "X" u "O" en horizontal, vertical o diagonal.
-       > Entradas: dict[tuple, str] tablero
-       > Retornos: None'''
-    
-    print("Empate")
+    '''Implementa un algoritmo de búsqueda para hallar los patrones de 4
+       coincidencias de la misma marca "O" o "X" en horizontal, vertical
+       o diagonal.'''
+    # Por hacer
+    # Tratar de implementar algoritmo de ventana deslizante
 
 
 
-
-# Juego como tal
+# Llamar funciones según el flujo del juego
 while (opcion_menu != "s"):
     opcion_menu = imprimir_menu()
 
