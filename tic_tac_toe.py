@@ -15,38 +15,39 @@ import platform
 import random
 
 # Variables globales de formato
-ESPACIO_HORIZONTAL_VENTANA = ' '*61
-LINEA_HORIZONTAL_VENTANA = '─'*61
+ESPACIO_FONDO: str = ' ' * 61
+BORDE_VENTANA: str = '─' * 61
 
 # Definir funciones
 def imprimir_menu() -> str:
     '''Muestra la pantalla principal del juego con las opciones para el
        jugador. Solicita y retorna la elección del jugador.'''
     
-    print('╭' + LINEA_HORIZONTAL_VENTANA + '╮')
+    print('╭' + BORDE_VENTANA + '╮')
     print("│                         TIC TAC TOE                         │")
-    print('├' + LINEA_HORIZONTAL_VENTANA + '┤')
+    print('├' + BORDE_VENTANA + '┤')
     print("│ Escribe una letra:  ▄▄     ▄▄  ▄▄▄▄▄▄  ▄▄     ▄▄  ▄▄▄▄▄▄    │")
     print("│  > [j] Jugar          ▀▄ ▄▀   █      █   ▀▄ ▄▀   █      █   │")
     print("│  > [i] Instrucciones    █    █        █    █    █        █  │")
     print("│  > [c] Créditos       ▄▀ ▀▄   █      █   ▄▀ ▀▄   █      █   │")
     print("│  > [s] Salir        ▀▀     ▀▀  ▀▀▀▀▀▀  ▀▀     ▀▀  ▀▀▀▀▀▀    │")
-    print('╰' + LINEA_HORIZONTAL_VENTANA + '╯')
+    print('╰' + BORDE_VENTANA + '╯')
 
-    # Manejo de excepciones para la entrada del usuario en el menú
-    caracter_valido = False
-    opciones_validas = "jics"
-    while (not caracter_valido):
+    # Manejo de excepciones para que el usuario pueda elegir en el menú
+    caracter_es_valido = False
+    caracteres_validos = "jics"
+
+    while (not caracter_es_valido):
         opcion_menu = input(">>> ")
         if (len(opcion_menu) != 1):
             print("\n¡Woah! Recuerda que solo necesitas" \
                     " escribir una letra (∩_∩;)\n")
-        elif ((opcion_menu not in opciones_validas)):
-            print("\n¡Ups! Parece que ese caracter no está" \
+        elif (opcion_menu not in caracteres_validos):
+            print("\n¡Ups! Parece que esa letra no está" \
                     " en las opciones (∩_∩;)\n")
         else:
-            caracter_valido = True
-    if (not caracter_valido):
+            caracter_es_valido = True
+    if (not caracter_es_valido):
         opcion_menu = input(">>> ")
 
     return opcion_menu
@@ -56,34 +57,39 @@ def imprimir_instrucciones() -> str:
     '''Muestra las instruccionbes del juego. Solicita y retorna '<' para
        que el jugador pueda regresar al menú.'''
 
-    print('╭' + LINEA_HORIZONTAL_VENTANA + '╮')
+    print('╭' + BORDE_VENTANA + '╮')
     print("│                        INSTRUCCIONES                        │")
-    print('├' + LINEA_HORIZONTAL_VENTANA + '┤')
-    print("│  >                                                          │")
-    print("│  >                                                          │")
-    print("│  >                                                          │")
-    print("│  >                                                          │")
-    print("│  >                                                          │")
-    print("│  >                                                          │")
-    print("│  >                                                          │")
-    print("│  >                                                          │")
-    print("│  > Luego de cada [>>>] es donde puedes escribir.            │")
+    print('├' + BORDE_VENTANA + '┤')
+    print("│  > Puedes cambiar de pantalla ingresando un caracter.       │")
     print("│  > Escribiendo [<] regresas al inicio, si no estás jugando. │")
-    print('╰' + LINEA_HORIZONTAL_VENTANA + '╯')
+    print("│  > Al iniciar una partida debes ingresar tu nombre y marca. │")
+    print("│  > En Tic Tac Toe debes colocar cuatro [X] u [O] para ganar.│")
+    print("│  > El tablero es de 8x8 casillas, todas vacías al inicio.   │")
+    print("│  > ¡Juegas contra el CPU de tu computadora!                 │")
+    print("│  > Las marcas seguidas en horizontal, vertical o diagonal.  │")
+    print("│  > El juego utiliza turnos ¡Tú siempre comenzarás!          │")
+    print("│  > Luego de cada [>>>] es donde puedes escribir.            │")
+    print("│  >             │")
+    print("│  > Gana quien logre primero 4 marcas en línea.      (\_/)   │")
+    print("│  > Empate si el tablero se llena sin ganador.       (oᴥo)   │")
+    print("│  > Luego de cada partida puedes iniciar otra.       /⊃ ⊂\   │")
+    print("│  > Con [y] inicias otra, sino el juego termina.    ▐▀▀▀▀▀▌  │")
+    print('╰' + BORDE_VENTANA + '╯')
 
     # Manejo de excepciones para que el usuario pueda regresar al menú
-    caracter_valido = False
-    while (not caracter_valido):
+    caracter_es_valido = False
+
+    while (not caracter_es_valido):
         volver_al_menu = input(">>> ")
         if (len(volver_al_menu) != 1):
             print("\n¡Woah! Recuerda que para regresar al inicio" \
                     " solo necesitas escribir [<] (∩_∩;)\n")
-        elif ((volver_al_menu != '<')):
+        elif (volver_al_menu != '<'):
             print("\n¡Ups! Parece que eso no es un [<]"\
                     " vuelve a intentarlo (∩_∩;)\n")
         else:
-            caracter_valido = True
-    if (not caracter_valido):
+            caracter_es_valido = True
+    if (not caracter_es_valido):
         volver_al_menu = input(">>> ")
 
     return volver_al_menu
@@ -93,20 +99,21 @@ def imprimir_creditos() -> str:
     '''Muestra los créditos del juego. Pide y retorna '<' para que el
        jugador pueda regresar al menú.'''
 
-    print('╭' + LINEA_HORIZONTAL_VENTANA + '╮')
+    print('╭' + BORDE_VENTANA + '╮')
     print("│                        DESARROLLADOR                        │")
-    print('├' + LINEA_HORIZONTAL_VENTANA + '┤')
-    print('│' + ESPACIO_HORIZONTAL_VENTANA + '│')
+    print('├' + BORDE_VENTANA + '┤')
+    print('│' + ESPACIO_FONDO + '│')
     print("│                      Gabriel Torres G.                      │")
     print("│                                                   * ✧ ･     │")
     print(r"│                      GitHub: gabtor01          ･ﾟ (\_/)✧    │")
     print("│                                                 * (^ᴥ^) :   │")
     print(r"│                                                   /⊃ ⊂\     │")
     print("│                                                 ▐▀▀▀▀▀▀▀▌   │")
-    print('╰' + LINEA_HORIZONTAL_VENTANA + '╯')
+    print('╰' + BORDE_VENTANA + '╯')
 
     # Manejo de excepciones para que el usuario pueda regresar al menú
     caracter_valido = False
+
     while (not caracter_valido):
         volver_al_menu = input(">>> ")
         if (len(volver_al_menu) != 1):
@@ -123,7 +130,7 @@ def imprimir_creditos() -> str:
     return volver_al_menu
 
 
-def imprimir_tablero(tablero: dict[tuple, str],
+def imprimir_tablero(tablero: dict[tuple[str, int], str],
                      nombre_jugador: str, 
                      nombre_computadora: str) -> None:
     '''Muestra el tablero del juego actualizado.'''
@@ -162,11 +169,11 @@ def imprimir_tablero(tablero: dict[tuple, str],
 
     # Imprimir el brode de la interfaz
     print("│         " + "     ".join(columnas) + "         │")
-    print('│' + ESPACIO_HORIZONTAL_VENTANA + '│')
-    print('╰' + LINEA_HORIZONTAL_VENTANA + '╯')
+    print('│' + ESPACIO_FONDO + '│')
+    print('╰' + BORDE_VENTANA + '╯')
 
 
-def crear_tablero() -> dict[tuple, str]:
+def crear_tablero() -> dict[tuple[str, int], str]:
     '''Crea e inicializa el tablero del juego con caracteres vacíos ' '
        al comienzo de cada partida.'''
     
@@ -248,7 +255,8 @@ def computadora_responde(tablero: dict[tuple, str]) -> str:
 
 def colocar_marca(marca: str, 
                   posicion_marca: str, 
-                  tablero: dict[tuple, str]) -> dict[tuple, str]:
+                  tablero: dict[tuple[str, str], str]) \
+                  -> dict[tuple[str, str], str]:
     '''Ubica la marca en el tablero en la posición especificada.'''
     
     # posicion_marca[0]: columna
@@ -285,48 +293,66 @@ def colocar_marca(marca: str,
     return tablero
 
 
-def buscar_ganador(posicion_marca: str,
-                  datos: dict[str, str],  
-                  tablero: dict[tuple, str]) -> None:
+def buscar_ganador(tablero: dict[tuple[str, str], str],\
+                   datos: dict[str, str])\
+                   -> None:
     '''Implementa un algoritmo de búsqueda para hallar los patrones de 4
        coincidencias de la misma marca 'X' u 'O' en horizontal, vertical
        o diagonal.'''
-    
-    # Definir un patron para la búsqueda dependiente del turno (Cambia)
-    if (datos["marca"] == 'X'):
-        patron = "XXXX"
-    else:
-        patron = "OOOO"
 
-    # Índices para poder verificar coincidencia con el tamaño del patrón
-    punteros = {"cont_hori": 0,
-                "cont_vert": 0,
-                "cont_diag": 0,}
-    
-    # Recorrer la matriz del diccionario
-    for i in range(0, 9 - len(patron)):
-        for j in range(0, 9 - len(patron)):
-            while ((punteros["cont_hori"] < 5  or
-                    punteros["cont_vert"] < 5  or
-                    punteros["cont_diag"] < 5)):
-                
-                #Si la casilla está vacía seguir
-                if ((tablero[(j,i)] == ' ') or
-                    (tablero[(i,j)] == ' ') or
-                    (tablero[(j,j)] == ' ')):
-                    continue
-                
-                # Verificar coincidencias en horizontal
-                if (tablero[(j,i)] == patron[j]):
-                    punteros["cont_hori"] += 1
+    columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']   
+    n = 8  # tablero 8x8
 
-                # Verificar coincidencias en vertical
-                if (tablero[(i,j)] == patron[j]):
-                    punteros["cont_vert"] += 1
+    hay_ganador: bool = False
+    for i in range(0, n):
+        for j in range(1, n + 1):
+            coordenadas = (columnas[i], j)
+            if coordenadas not in tablero:
+                continue
 
-                # Verificar coincidencias en diagonal
-                if (tablero[(j,j)] == patron[j]):
-                    punteros["cont_diag"] += 1
+            marca = tablero[coordenadas]
+            if marca not in ('X', 'O'):
+                continue
+
+            # Horizontal (─)
+            if (i + 3 < n):
+                if (tablero[(columnas[i+1], j)] == marca and 
+                    tablero[(columnas[i+2], j)] == marca and
+                    tablero[(columnas[i+3], j)] == marca):
+                    print("Ganador en horizontal desde {}"
+                        .format(coordenadas))
+                    hay_ganador = True
+
+            # Vertical (|)
+            if (j + 3 <= n):
+                if (tablero.get((columnas[i], j+1)) == marca and
+                    tablero.get((columnas[i], j+2)) == marca and
+                    tablero.get((columnas[i], j+3)) == marca):
+                    print("Ganador en vertical desde {}"
+                        .format(coordenadas))
+                    hay_ganador = True
+
+            # Diagonal (\)
+            if i + 3 < n and j + 3 <= n:
+                if (tablero.get((columnas[i+1], j+1)) == marca and
+                    tablero.get((columnas[i+2], j+2)) == marca and
+                    tablero.get((columnas[i+3], j+3)) == marca):
+                    print("Ganador en diagonal \\ desde {}"
+                        .format(coordenadas))
+                    hay_ganador = True
+
+            # Diagonal (/)
+            if i + 3 < n and j - 3 >= 1:
+                if (tablero.get((columnas[i+1], j-1)) == marca and
+                    tablero.get((columnas[i+2], j-2)) == marca and
+                    tablero.get((columnas[i+3], j-3)) == marca):
+                    print("Ganador en diagonal / desde {}"
+                        .format(coordenadas))
+                    hay_ganador = True
+
+    if not hay_ganador:
+        print("No hay ganador")
+
 
 opcion_menu = ' '
 # Invocar funciones según el flujo del juego
@@ -364,6 +390,8 @@ while (opcion_menu != 's'):
             tablero_juego = colocar_marca(datos_jugador["marca"],
                                           ubicacion_marca, 
                                           tablero_juego)
+            
+            buscar_ganador(datos_jugador, tablero_juego)
 
             # Mostrar el tablero
             imprimir_tablero(tablero_juego, 
@@ -377,6 +405,9 @@ while (opcion_menu != 's'):
             colocar_marca(datos_computadora["marca"],
                           ubicacion_marca,
                           tablero_juego)
+
+            
+            buscar_ganador(datos_computadora, tablero_juego)
 
     else:
         print("Parece que esa opción no está dentro del juego (╥﹏╥)")
