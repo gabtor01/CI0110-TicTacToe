@@ -26,7 +26,7 @@ def imprimir_menu() -> str:
 
     print('\n')
     print('╭' + BORDE_VENTANA + '╮')
-    print('│' + ' '*25 + "\033[1mTIC TAC TOE\033[0m" + ' '*25 + '│')
+    print('│' + ' '*25 + negrita("TIC TAC TOE") + ' '*25 + '│')
     print('├' + BORDE_VENTANA + '┤')
     print("│ Escribe una letra:  ▄▄     ▄▄  ▄▄▄▄▄▄  ▄▄     ▄▄  ▄▄▄▄▄▄    │")
     print("│  > [j] Jugar          ▀▄ ▄▀   █      █   ▀▄ ▄▀   █      █   │")
@@ -61,7 +61,7 @@ def imprimir_instrucciones() -> str:
 
     print('\n')
     print('╭' + BORDE_VENTANA + '╮')
-    print("│                        INSTRUCCIONES                        │")
+    print("│{:^69}│".format(negrita("INSTRUCCIONES")))
     print('├' + BORDE_VENTANA + '┤')
     print("│  > Puedes cambiar de pantalla ingresando un caracter.       │")
     print("│  > Escribiendo [<] regresas al inicio, si no estás jugando. │")
@@ -104,15 +104,14 @@ def imprimir_creditos() -> str:
 
     print('\n')
     print('╭' + BORDE_VENTANA + '╮')
-    print("│                        DESARROLLADOR                        │")
+    print("│{:^69}│".format(negrita("DESARROLLADOR")))
     print('├' + BORDE_VENTANA + '┤')
     print('│' + ESPACIO_FONDO + '│')
-    print("│                      Gabriel Torres G.                      │")
-    print("│                                                   * ✧ ･     │")
-    print(r"│                      GitHub: gabtor01          ･ﾟ (\_/)✧    │")
-    print("│                                                 * (^ᴥ^) :   │")
-    print(r"│                                                   /⊃ ⊂\     │")
-    print("│                                                 ▐▀▀▀▀▀▀▀▌   │")
+    print("│                      Gabriel Torres G.             * ✧ ･    │")
+    print(r"│                                                 ･ﾟ (\_/)✧   │")
+    print("│                      GitHub: gabtor01            * (^ᴥ^) :  │")
+    print(r"│                                                    /⊃ ⊂\    │")
+    print("│                                                  ▐▀▀▀▀▀▀▀▌  │")
     print('╰' + BORDE_VENTANA + '╯')
 
     # Manejo de excepciones para que el usuario pueda regresar al menú
@@ -146,8 +145,8 @@ def imprimir_tablero(tablero: dict[tuple[str, int], str],
     # {:^30} centra la variable en un espacio de 30 caracteres
     print('\n')
     print("╭──────────────────────────────┬──────────────────────────────╮")
-    print("│\033[1m{:^30}\033[0m│\033[1m{:^30}\033[0m│"
-          .format(nombre_jugador, nombre_computadora))
+    print("│{:^38}│{:^38}│"
+          .format(negrita(nombre_jugador), negrita(nombre_computadora)))
     print("├──────────────────────────────┴──────────────────────────────┤")
     print("│                                                             │")
     print("│         " + "     ".join(columnas) + "         │")
@@ -201,7 +200,7 @@ def solicitar_datos() -> tuple[dict[str, str], dict[str, str]]:
        computadora.'''
     
     info_jugador = {"nombre":"", "marca":""}
-    info_computadora = {"nombre":plt_processor()[0:7], "marca":""}
+    info_computadora = {"nombre":plt_processor()[0:29], "marca":""}
 
     # Solicitar el nombre
     print("\nLord {} exige saber el nombre de su contrincante... "
@@ -346,7 +345,7 @@ def hay_ganador(tablero: dict[tuple[str, str], str]) -> bool:
 
     return False
 
-
+# Funciones misceláneas
 def limpiar_texto() -> None:
     '''Limpia la consola según avance el juego.'''
     if plt_system() == 'Windows':
@@ -355,9 +354,14 @@ def limpiar_texto() -> None:
         os_system('clear')
 
 
+def negrita(texto: str) -> str:
+    return "\033[1m"+texto+"\033[0m"
+
+
 opcion_menu = ' '
 # Control de cambio de pantallas
 while (opcion_menu != 's'):
+    limpiar_texto()
     opcion_menu = imprimir_menu()
 
     if (opcion_menu == 'i'):
@@ -365,23 +369,21 @@ while (opcion_menu != 's'):
         regresar_menu = imprimir_instrucciones()
         if (regresar_menu == '<'):
             limpiar_texto()
-            continue
 
     elif (opcion_menu == 'c'):
         limpiar_texto()
         regresar_menu = imprimir_creditos()
         if (regresar_menu == "<"):
             limpiar_texto()
-            continue
 
     elif (opcion_menu == 'j'):
         limpiar_texto()
 
-        # Crear el tablero e inicializar valores de las claves en ' '
-        tablero_juego = crear_tablero()
-
         # Solicitar datos al jugador
         datos_jugador, datos_computadora = solicitar_datos()
+
+        # Crear el tablero e inicializar valores de las claves en ' '
+        tablero_juego = crear_tablero()
 
         # Control del juego
         contador_turnos = 1
@@ -401,8 +403,8 @@ while (opcion_menu != 's'):
                                           tablero_juego)
             
             contador_turnos += 1
-            if (contador_turnos > 6):
-                if (hay_ganador(tablero_juego)):
+            if (contador_turnos > 6 and 
+                hay_ganador(tablero_juego)):
                     limpiar_texto()
                     imprimir_tablero(tablero_juego,
                                 datos_jugador["nombre"],
@@ -427,8 +429,8 @@ while (opcion_menu != 's'):
                           tablero_juego)
 
             contador_turnos += 1
-            if (contador_turnos > 7):
-                if (hay_ganador(tablero_juego)):
+            if (contador_turnos > 7 and 
+                hay_ganador(tablero_juego)):
                     limpiar_texto()
                     imprimir_tablero(tablero_juego,
                                 datos_jugador["nombre"],
