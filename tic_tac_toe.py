@@ -38,15 +38,16 @@ def imprimir_menu() -> str:
     # Manejo de excepciones para que el usuario pueda elegir en el menú
     caracter_es_valido = False
     caracteres_validos = "jics"
-
     while (not caracter_es_valido):
         opcion_menu = input(">>> ")
         if (len(opcion_menu) != 1):
-            print("\n¡Woah! Recuerda que solo necesitas" \
-                    " escribir una letra (∩_∩;)\n")
+            comentar("izquierda",
+                    "¡Woah! Solo necesitas escribir una letra.",
+                    "ᕙ(;∩_∩)")
         elif (opcion_menu not in caracteres_validos):
-            print("\n¡Ups! Parece que esa letra no está" \
-                    " en las opciones (∩_∩;)\n")
+            comentar("derecha",
+                    "¡Ups! Parece que esa letra no está en las opciones.",
+                    "(∩_∩;)ᕗ")
         else:
             caracter_es_valido = True
     if (not caracter_es_valido):
@@ -85,11 +86,13 @@ def imprimir_instrucciones() -> str:
     while (not caracter_es_valido):
         volver_al_menu = input(">>> ")
         if (len(volver_al_menu) != 1):
-            print("\n¡Woah! Recuerda que para regresar al inicio" \
-                    " solo necesitas escribir [<] (∩_∩;)\n")
+            comentar("izquierda",
+                    "¡Woah! Para volver solo escribe el caracter [<].",
+                    "ᕙ(;∩_∩)")
         elif (volver_al_menu != '<'):
-            print("\n¡Ups! Parece que eso no es un [<]"\
-                    " vuelve a intentarlo (∩_∩;)\n")
+            comentar("derecha",
+                    "¡Ups! Caracter equivado, intenta otra vez.",
+                    "(∩_∩;)ᕗ")
         else:
             caracter_es_valido = True
     if (not caracter_es_valido):
@@ -120,11 +123,13 @@ def imprimir_creditos() -> str:
     while (not caracter_valido):
         volver_al_menu = input(">>> ")
         if (len(volver_al_menu) != 1):
-            print("\n¡Woah! Recuerda que para regresar al inicio" \
-                    " solo necesitas escribir [<] (∩_∩;)\n")
-        elif ((volver_al_menu != '<')):
-            print("\n¡Ups! Parece que eso no es un [<]"\
-                    " vuelve a intentarlo (∩_∩;)\n")
+            comentar("izquierda",
+                    "¡Woah! Para volver solo escribe el caracter [<].",
+                    "ᕙ(;∩_∩)")
+        elif (volver_al_menu != '<'):
+            comentar("derecha",
+                    "¡Ups! Caracter equivado, intenta otra vez.",
+                    "(∩_∩;)ᕗ")
         else:
             caracter_valido = True
     if (not caracter_valido):
@@ -134,8 +139,8 @@ def imprimir_creditos() -> str:
 
 
 def imprimir_tablero(tablero: dict[tuple[str, int], str],
-                     nombre_jugador: str, 
-                     nombre_computadora: str) -> None:
+                    nombre_jugador: str, 
+                    nombre_computadora: str) -> None:
     '''Muestra el tablero del juego actualizado.'''
 
     columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
@@ -148,7 +153,7 @@ def imprimir_tablero(tablero: dict[tuple[str, int], str],
     print("│{:^38}│{:^38}│"
           .format(negrita(nombre_jugador), negrita(nombre_computadora)))
     print("├──────────────────────────────┴──────────────────────────────┤")
-    print("│                                                             │")
+    print('│' + ESPACIO_FONDO + '│')
     print("│         " + "     ".join(columnas) + "         │")
     print("│      ╔" + "═════╦" * 7 + "═════╗      │")
 
@@ -203,8 +208,10 @@ def solicitar_datos() -> tuple[dict[str, str], dict[str, str]]:
     info_computadora = {"nombre":plt_processor()[0:29], "marca":""}
 
     # Solicitar el nombre
-    print("\nLord {} exige saber el nombre de su contrincante... "
-          "(╯°д°)╯︵ ┻━┻\n ".format(info_computadora["nombre"]))
+    comentar("izquierda",
+            "Lord {} exige saber el nombre de su contrincante..."\
+            .format(info_computadora["nombre"]),
+            "(╯°д°)╯︵ ┻━┻")
     
     # Manejo de excepciones para el nombre del jugador
     nombre_valido = False
@@ -215,11 +222,20 @@ def solicitar_datos() -> tuple[dict[str, str], dict[str, str]]:
             info_jugador["nombre"] = nombre_jugador
             nombre_valido = True
         else:
-            print("\nMucho texto... (￣ρ￣)zzZZ\n")
+            comentar("izquierda",
+                    "Muuucho texto... al poderoso {} le aburre"\
+                    .format(info_computadora["nombre"]),
+                    "(￣ρ￣)zzZZ")
             
     # Solicitar la marca
-    print("\n(๑˃ᴗ˂)づ Muy bien {}, solo falta que decidas tu marca "
-          "¿[O] ᕙ(⇀ᴗ↼‶)ᕗ [X]?\n".format(info_jugador["nombre"]))
+    comentar("izquierda",
+            "{} ¡Ese nombre suena a victoria!"\
+            .format(info_jugador["nombre"]),
+            "(๑˃ᴗ˂)づ")
+    
+    comentar("derecha",
+            "Solo falta que decidas tu marca ¿[O] || [X]?",
+            "ᕙ(⇀ᴗ↼‶)ᕗ")
     
     # Manejo de excepciones para la marca del jugador
     marca_valida = False
@@ -230,8 +246,10 @@ def solicitar_datos() -> tuple[dict[str, str], dict[str, str]]:
             info_jugador["marca"] = marca_jugador
             marca_valida = True
         else:
-            print("\n¡Solo puedes escoger entre [O] y [X] \033[1m{}\033[0m!\n"
-                  .format(info_jugador["nombre"]))
+            comentar("izquierda",
+                "¡Solo puedes escoger entre [O] y [X] {}!"\
+                .format(info_jugador["nombre"]),
+                "ᕙ(;∩_∩)")
 
     # Definir la marca de la computadora
     if info_jugador["marca"] == 'O':
@@ -258,9 +276,9 @@ def computadora_responde(tablero: dict[tuple, str]) -> str:
 
 
 def colocar_marca(marca: str, 
-                  posicion_marca: str, 
-                  tablero: dict[tuple[str, str], str]) \
-                  -> dict[tuple[str, str], str]:
+                 posicion_marca: str, 
+                 tablero: dict[tuple[str, str], str]) \
+                 -> dict[tuple[str, str], str]:
     '''Ubica la marca en el tablero en la posición especificada.'''
     
     # posicion_marca[0]: columna
@@ -272,8 +290,9 @@ def colocar_marca(marca: str,
     ubicacion_valida = False
     while (not ubicacion_valida):
         if (len(posicion_marca) != 2):
-            print("\n¡Woah! Recuerda que solo necesitas" \
-                  " 2 dígitos (∩_∩;)\n")
+            comentar("izquierda",
+                    "¡Woah! Solo necesitas una letra y un número.",
+                    "ᕙ(;∩_∩)")       
         else:
             try:
                 columna = posicion_marca[0].upper()
@@ -281,15 +300,19 @@ def colocar_marca(marca: str,
                 coordenadas = (columna, fila)
 
                 if (coordenadas not in tablero):
-                    print("\nNo tenemos esa ubicación en " \
-                          "nuestro tablero (U_U')\n")
+                    comentar("derecha",
+                            "No existe esa ubicación en nuestro tablero...",
+                            "(U_U')")
                 elif (tablero[coordenadas] != ' '):
-                    print("\nYa existe una marca en esa posición (╥﹏╥)\n")
+                    comentar("izquierda",
+                            "Ya existe una marca en esa posición...",
+                            "(U_U')") 
                 else:
                     ubicacion_valida = True
             except ValueError:
-                print("\n¡Ups! No olvides que la fila debe" \
-                      " ser un número del 1 al 8 (∩_∩;)\n")
+                comentar("derecha",
+                        "¡Ups! La fila debe ser un número entero del 1 al 8.",
+                        "(∩_∩;)ᕗ")
         if (not ubicacion_valida):
             posicion_marca = input(">>> ")
 
@@ -302,52 +325,59 @@ def hay_ganador(tablero: dict[tuple[str, str], str]) -> bool:
        coincidencias de la misma marca 'X' u 'O' en horizontal, vertical
        o diagonal.'''
 
-    columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']   
-    n = 8  # tablero 8x8
+    # Acceder a la columna con columnas[i]
+    columnas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
-    for i in range(0, n):
-        for j in range(1, n + 1): # Filas comienzan en índice 1
+    # El tablero es 8x8
+    n = 8
+
+    # Direcciones para recorrer el tablero según cada patrón
+    direcciones = [
+        (1,  0), # Hori(─): 1 col a la derecha, no se mueve la fila
+        (0,  1), # Vert(|): 1 fila abajo, no se mueve la col
+        (1,  1), # Diag(\): 1 fila abajo y 1 col a la derecha
+        (1, -1)  # Diag(/): 1 fila arriba y 1 col a la derecha
+    ]
+
+    for i in range(n):
+        for j in range(1, n + 1):
+            # Obtener llave actual
             coordenadas = (columnas[i], j)
-            if coordenadas not in tablero:
+
+            # Obtener valor actual en llave actual
+            marca_act = tablero[coordenadas]
+
+            # Si la marca no es ni X ni O, saltar a siguiente iteración
+            if marca_act == ' ':
                 continue
 
-            marca = tablero[coordenadas]
-            if marca not in ('X', 'O'):
-                continue
+            for (mov_colu, mov_fila) in direcciones:
+                hay_ganador = True
 
-            # Horizontal (─)
-            if (i + 3 < n                            and
-                tablero[(columnas[i+1], j)] == marca and 
-                tablero[(columnas[i+2], j)] == marca and
-                tablero[(columnas[i+3], j)] == marca):
-                return True
+                # Recorrer 3 marcas desde la marca actual
+                for k in range(1, 4):
+                    sig_colu = i + mov_colu * k
+                    sig_fila = j + mov_fila * k
+                    
+                    # Si los índices se salen de rango, no se continúa
+                    if not (0 <= sig_colu < n and 1 <= sig_fila <= n):
+                        hay_ganador = False
+                        break
+                    
+                    # Si se rompe el patrón de 4, no se continúa
+                    if tablero[(columnas[sig_colu], sig_fila)] != marca_act:
+                        hay_ganador = False
+                        break
 
-            # Vertical (|)
-            if (j + 3 <= n                               and 
-                tablero.get((columnas[i], j+1)) == marca and
-                tablero.get((columnas[i], j+2)) == marca and
-                tablero.get((columnas[i], j+3)) == marca):
-                return True
-
-            # Diagonal (\)
-            if ((i + 3 < n and j + 3 <= n)                 and
-                tablero.get((columnas[i+1], j+1)) == marca and
-                tablero.get((columnas[i+2], j+2)) == marca and
-                tablero.get((columnas[i+3], j+3)) == marca):
-                return True
-
-            # Diagonal (/)
-            if ((i + 3 < n and j - 3 >= 1)                 and
-                tablero.get((columnas[i+1], j-1)) == marca and
-                tablero.get((columnas[i+2], j-2)) == marca and
-                tablero.get((columnas[i+3], j-3)) == marca):
-                return True
+                if hay_ganador:
+                    return True
 
     return False
 
-# Funciones misceláneas
-def limpiar_texto() -> None:
-    '''Limpia la consola según avance el juego.'''
+
+def limpiar_consola() -> None:
+    '''Borra el texto que se ha impreso en la consola.'''
+    # Seleccionar comando según el sistema operativo
     if plt_system() == 'Windows':
         os_system('cls')
     else:
@@ -355,29 +385,54 @@ def limpiar_texto() -> None:
 
 
 def negrita(texto: str) -> str:
+    '''Aplica negrita a la cadena utilizada como
+       parámetro usando códigos de escape ANSI.'''
     return "\033[1m"+texto+"\033[0m"
 
 
+def comentar(lateralidad: str,
+             mensaje: str,
+             carita: str) -> None:
+    '''Da formato a los comentarios que el jugdor ve
+       en diferentes momentos durante la partida.'''
+
+    if (lateralidad == "izquierda"):
+        print("\n")
+        print("  ╭─────────────────────────────────────────────────────────╮")
+        print("  │{:^65}│".format(negrita(mensaje)))
+        print("  │╭────────────────────────────────────────────────────────╯")
+        print("  ╰╯")
+        print(carita)
+        print("\n")
+    elif (lateralidad == "derecha"):
+        print("\n")
+        print("  ╭─────────────────────────────────────────────────────────╮")
+        print("  │{:^65}│".format(negrita(mensaje)))
+        print("  ╰────────────────────────────────────────────────────────╮│")
+        print("                                                           ╰╯")
+        print(' ' * 57 +carita)
+        print("\n")
+
+
+# Flujo del juego
 opcion_menu = ' '
-# Control de cambio de pantallas
 while (opcion_menu != 's'):
-    limpiar_texto()
     opcion_menu = imprimir_menu()
 
     if (opcion_menu == 'i'):
-        limpiar_texto()
+        limpiar_consola()
         regresar_menu = imprimir_instrucciones()
         if (regresar_menu == '<'):
-            limpiar_texto()
+            limpiar_consola()
 
     elif (opcion_menu == 'c'):
-        limpiar_texto()
+        limpiar_consola()
         regresar_menu = imprimir_creditos()
         if (regresar_menu == "<"):
-            limpiar_texto()
+            limpiar_consola()
 
     elif (opcion_menu == 'j'):
-        limpiar_texto()
+        limpiar_consola()
 
         # Solicitar datos al jugador
         datos_jugador, datos_computadora = solicitar_datos()
@@ -391,7 +446,7 @@ while (opcion_menu != 's'):
             # Empieza el jugador
 
             # Mostrar el tablero
-            limpiar_texto()
+            limpiar_consola()
             imprimir_tablero(tablero_juego,
                              datos_jugador["nombre"],
                              datos_computadora["nombre"])
@@ -405,17 +460,20 @@ while (opcion_menu != 's'):
             contador_turnos += 1
             if (contador_turnos > 6 and 
                 hay_ganador(tablero_juego)):
-                    limpiar_texto()
+                    limpiar_consola()
                     imprimir_tablero(tablero_juego,
                                 datos_jugador["nombre"],
                                 datos_computadora["nombre"])
-                    
-                    print("\n¡Has ganado {}!\n"
-                        .format(datos_jugador["nombre"]))
+
+                    comentar("izquierda",
+                            "¡Has ganado {}!"\
+                            .format(datos_jugador["nombre"]),
+                            "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧")
+ 
                     break # Si hay ganador se rompe el ciclo
 
             # Mostrar el tablero
-            limpiar_texto()
+            limpiar_consola()
             imprimir_tablero(tablero_juego, 
                              datos_jugador["nombre"],
                              datos_computadora["nombre"])
@@ -431,27 +489,26 @@ while (opcion_menu != 's'):
             contador_turnos += 1
             if (contador_turnos > 7 and 
                 hay_ganador(tablero_juego)):
-                    limpiar_texto()
+                    limpiar_consola()
                     imprimir_tablero(tablero_juego,
                                 datos_jugador["nombre"],
                                 datos_computadora["nombre"])
                     
-                    print("\n{} te ha derrotado (╥﹏╥)\n"
-                        .format(datos_computadora["nombre"]))
+                    comentar("izquierda",
+                            "{} te ha derrotado..."\
+                            .format(datos_computadora["nombre"]),
+                            "(╥﹏╥)")
                     break
 
         # Si se acaban los turnos y no hubo ganador es un empate
         if (not hay_ganador(tablero_juego)):
-            limpiar_texto()
-            print("\n¡Has igualado el poder de {} con un empate!\n"
-                  .format(format(datos_computadora["nombre"])))
+            limpiar_consola()
+            comentar("izquierda",
+                    "¿Ha sido empate? Lo creía imposible.",
+                    "(￣～￣;)")
 
     else:
-        limpiar_texto()
-        print("\n")
-        print("  ╭────────────────╮")
-        print("  │ ¡Hasta pronto! │")
-        print("  │╭───────────────╯")
-        print("  ╰╯                ")
-        print("(∩_∩)ノ")
-        print("\n")
+        limpiar_consola()
+        comentar("izquierda",
+                "¡Hasta pronto!",
+                "(∩_∩)ノ")
