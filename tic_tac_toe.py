@@ -10,16 +10,16 @@ Notas:
     2) Para ejecutar en la terminal, usar: python .\tic_tac_toe.py
 '''
 
-# Importar métodos de bibliotecas
+# Inclusión de métodos de bibliotecas
 from platform import processor as plt_processor, system as plt_system
 from random import choice as rnd_choice
 from os import system as os_system
 
-# Variables globales de formato
+# Definición de variables globales
 ESPACIO_FONDO: str = ' ' * 61
 BORDE_VENTANA: str = '─' * 61
 
-# Definir funciones
+# Definición de funciones
 def imprimir_menu() -> str:
     '''Muestra la pantalla principal del juego con las opciones para el
        jugador. Solicita y retorna la elección del jugador.'''
@@ -46,7 +46,7 @@ def imprimir_menu() -> str:
                     "ᕙ(;∩_∩)")
         elif (opcion_menu not in caracteres_validos):
             comentar("derecha",
-                    "¡Ups! Parece que esa letra no está en las opciones.",
+                    "¡Ups! Parece que ese símbolo no está en las opciones.",
                     "(∩_∩;)ᕗ")
         else:
             caracter_es_valido = True
@@ -64,20 +64,18 @@ def imprimir_instrucciones() -> str:
     print('╭' + BORDE_VENTANA + '╮')
     print("│{:^69}│".format(negrita("INSTRUCCIONES")))
     print('├' + BORDE_VENTANA + '┤')
-    print("│  > Puedes cambiar de pantalla ingresando un caracter.       │")
-    print("│  > Escribiendo [<] regresas al inicio, si no estás jugando. │")
-    print("│  > Al iniciar una partida debes ingresar tu nombre y marca. │")
-    print("│  >                                                          │")
-    print("│  > El tablero es de 8x8 casillas, todas vacías al inicio.   │")
-    print("│  > ¡Juegas contra tu computadora!                           │")
-    print("│  > Las marcas seguidas en horizontal, vertical o diagonal.  │")
-    print("│  > El juego utiliza turnos ¡Tú siempre comenzarás!          │")
-    print("│  > Luego de cada [>>>] es donde puedes escribir.            │")
-    print("│  > Las líneas válidas horizontal, vertical o diagonal.      │")
-    print(r"│  > Gana quien logre primero 4 marcas en línea.      (\_/)   │")
-    print("│  > Empate si el tablero se llena sin ganador.       (oᴥo)   │")
-    print(r"│  > Luego de cada partida puedes iniciar otra.       /⊃ ⊂\   │")
-    print("│  > Con [y] inicias otra, sino el juego termina.    ▐▀▀▀▀▀▌  │")
+    print("│ >> En Tic Tac Toe compites contra el CPU de tu computadora. │")
+    print("│ >> Al iniciar partida, ingresas tu nombre y marca [O] o [X].│")
+    print("│ >> Solo colocas una marca por turno y siempre comienzas tú. │")
+    print("│ >> El tablero tiene 8 columnas (Letras) y 8 filas (Números).│")
+    print("│ >> Colocas tu marca ingresando: [ColumnaFila] (LetraNúmero).│")
+    print("│ >> Ganas si consigues formar un patrón de 4 marcas seguidas.│")
+    print("│ >> Se aceptan patrones en horizontal, vertical y diagonal.  │")
+    print("│ >> Al finalizar cada partida puedes comenzar otra.          │")
+    print(r"│ >> Siempre verás cómo se actualiza el tablero.     (\_/)    │")
+    print("│ >> Los [] encierran opciones o puntos clave.       (oᴥo)    │")
+    print(r"│ >> Con [<] vuelves al inicio, si no juegas.        /⊃ ⊂\    │")
+    print("│ >> Luego de [>>>] ingresas tus respuestas.        ▐▀▀▀▀▀▌   │")
     print('╰' + BORDE_VENTANA + '╯')
 
     # Manejo de excepciones para que el usuario pueda regresar al menú
@@ -91,7 +89,7 @@ def imprimir_instrucciones() -> str:
                     "ᕙ(;∩_∩)")
         elif (volver_al_menu != '<'):
             comentar("derecha",
-                    "¡Ups! Caracter equivado, intenta otra vez.",
+                    "¡Ups! Caracter equivocado, intenta otra vez.",
                     "(∩_∩;)ᕗ")
         else:
             caracter_es_valido = True
@@ -110,9 +108,9 @@ def imprimir_creditos() -> str:
     print("│{:^69}│".format(negrita("DESARROLLADOR")))
     print('├' + BORDE_VENTANA + '┤')
     print('│' + ESPACIO_FONDO + '│')
-    print("│                      Gabriel Torres G.             * ✧ ･    │")
+    print("│                   >> Gabriel Torres G.             * ✧ ･    │")
     print(r"│                                                 ･ﾟ (\_/)✧   │")
-    print("│                      GitHub: gabtor01            * (^ᴥ^) :  │")
+    print("│                   >> GitHub: gabtor01            * (^ᴥ^) :  │")
     print(r"│                                                    /⊃ ⊂\    │")
     print("│                                                  ▐▀▀▀▀▀▀▀▌  │")
     print('╰' + BORDE_VENTANA + '╯')
@@ -128,7 +126,7 @@ def imprimir_creditos() -> str:
                     "ᕙ(;∩_∩)")
         elif (volver_al_menu != '<'):
             comentar("derecha",
-                    "¡Ups! Caracter equivado, intenta otra vez.",
+                    "¡Ups! Caracter equivocado, intenta otra vez.",
                     "(∩_∩;)ᕗ")
         else:
             caracter_valido = True
@@ -234,7 +232,7 @@ def solicitar_datos() -> tuple[dict[str, str], dict[str, str]]:
             "(๑˃ᴗ˂)づ")
     
     comentar("derecha",
-            "Solo falta que decidas tu marca ¿[O] || [X]?",
+            "Solo falta que decidas tu marca ¿[O] o [X]?",
             "ᕙ(⇀ᴗ↼‶)ᕗ")
     
     # Manejo de excepciones para la marca del jugador
@@ -338,7 +336,7 @@ def hay_ganador(tablero: dict[tuple[str, str], str]) -> bool:
         (1,  1), # Diag(\): 1 fila abajo y 1 col a la derecha
         (1, -1)  # Diag(/): 1 fila arriba y 1 col a la derecha
     ]
-
+    # i, j y k son contadores
     for i in range(n):
         for j in range(1, n + 1):
             # Obtener llave actual
@@ -352,6 +350,7 @@ def hay_ganador(tablero: dict[tuple[str, str], str]) -> bool:
                 continue
 
             for (mov_colu, mov_fila) in direcciones:
+                # Se asume que hay ganador y se prueba contrapositivamente
                 hay_ganador = True
 
                 # Recorrer 3 marcas desde la marca actual
@@ -377,7 +376,7 @@ def hay_ganador(tablero: dict[tuple[str, str], str]) -> bool:
 
 def limpiar_consola() -> None:
     '''Borra el texto que se ha impreso en la consola.'''
-    # Seleccionar comando según el sistema operativo
+    # Selección de comando según el sistema operativo
     if plt_system() == 'Windows':
         os_system('cls')
     else:
@@ -458,6 +457,7 @@ while (opcion_menu != 's'):
                                           tablero_juego)
             
             contador_turnos += 1
+            # Se busca ganador hasta que se hayan puesto 4 marcas
             if (contador_turnos > 6 and 
                 hay_ganador(tablero_juego)):
                     limpiar_consola()
@@ -487,6 +487,7 @@ while (opcion_menu != 's'):
                           tablero_juego)
 
             contador_turnos += 1
+            # Se busca ganador hasta que se hayan puesto 4 marcas
             if (contador_turnos > 7 and 
                 hay_ganador(tablero_juego)):
                     limpiar_consola()
@@ -503,6 +504,9 @@ while (opcion_menu != 's'):
         # Si se acaban los turnos y no hubo ganador es un empate
         if (not hay_ganador(tablero_juego)):
             limpiar_consola()
+            imprimir_tablero(tablero_juego,
+                            datos_jugador["nombre"],
+                            datos_computadora["nombre"])
             comentar("izquierda",
                     "¿Ha sido empate? Lo creía imposible.",
                     "(￣～￣;)")
