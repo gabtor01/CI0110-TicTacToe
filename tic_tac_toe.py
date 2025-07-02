@@ -16,8 +16,8 @@ from random import choice as rnd_choice
 from os import system as os_system
 
 # Definición de variables globales
-ESPACIO_FONDO: str = ' ' * 61
-BORDE_VENTANA: str = '─' * 61
+ESPACIO_FONDO = ' ' * 61
+BORDE_VENTANA = '─' * 61
 
 # Definición de funciones
 def imprimir_menu() -> str:
@@ -64,9 +64,9 @@ def imprimir_instrucciones() -> str:
     print('╭' + BORDE_VENTANA + '╮')
     print("│{:^69}│".format(negrita("INSTRUCCIONES")))
     print('├' + BORDE_VENTANA + '┤')
-    print("│ >> En Tic Tac Toe compites contra el CPU de tu computadora. │")
+    print("│ >> En  Tic Tac Toe compites contra el CPU de tu computadora.│")
     print("│ >> Al iniciar partida, ingresas tu nombre y marca [O] o [X].│")
-    print("│ >> Solo colocas una marca por turno y siempre comienzas tú. │")
+    print("│ >> Solo  colocas una marca por turno y siempre comienzas tú.│")
     print("│ >> El tablero tiene 8 columnas (Letras) y 8 filas (Números).│")
     print("│ >> Colocas tu marca ingresando: [ColumnaFila] (LetraNúmero).│")
     print("│ >> Ganas si consigues formar un patrón de 4 marcas seguidas.│")
